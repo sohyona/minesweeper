@@ -1,2 +1,2 @@
 export const boardSize = 8;
-export const numberOfMine = 16;
+export const numberOfMine = 1;

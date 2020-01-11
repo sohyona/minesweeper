@@ -31,3 +31,9 @@ export const increaseOpenedCellNumber = () => {
     type: 'INCREASE_OPENED_CELL_NUMBER'
   }
 }
+
+export const decreaseOpenedCellNumber = () => {
+  return {
+    type: 'DECREASE_OPENED_CELL_NUMBER'
+  }
+}

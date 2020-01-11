@@ -6,6 +6,7 @@ import {
   increaseMineNumber,
   decreaseMineNumber,
   increaseOpenedCellNumber,
+  decreaseOpenedCellNumber,
 } from '../actions';
 import {boardSize} from '../misc';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -15,6 +16,7 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
   const dispatch = useDispatch ();
 
   const board = useSelector (state => state.board, []);
+  const numberOfMine = useSelector (state => state.mine);
 
   const handleClickEvent = (y, x) => {
     if (board[y][x].isOpen) return;
@@ -29,6 +31,7 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
       dispatch (increaseOpenedCellNumber ());
     } else {
       const openAllZeroCell = (y, x) => {
+        if (board[y][x].isFlag) return;
         dispatch (openCell (y, x));
 
         if (y === 0 || x === 0 || y > boardSize || x > boardSize) return;
@@ -38,28 +41,28 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
         if (board[y][x].count > 0) return;
 
         // 지뢰이면 안가는거, 플래그이면 안가는거
-        if (!board[y - 1][x - 1].isMine && !board[y - 1][x - 1].isOpen) {
+        if (!board[y - 1][x - 1].isOpen) {
           openAllZeroCell (y - 1, x - 1);
         }
-        if (!board[y - 1][x].isMine && !board[y - 1][x].isOpen) {
+        if (!board[y - 1][x].isOpen) {
           openAllZeroCell (y - 1, x);
         }
-        if (!board[y - 1][x + 1].isMine && !board[y - 1][x + 1].isOpen) {
+        if (!board[y - 1][x + 1].isOpen) {
           openAllZeroCell (y - 1, x + 1);
         }
-        if (!board[y][x - 1].isMine && !board[y][x - 1].isOpen) {
+        if (!board[y][x - 1].isOpen) {
           openAllZeroCell (y, x - 1);
         }
-        if (!board[y][x + 1].isMine && !board[y][x + 1].isOpen) {
+        if (!board[y][x + 1].isOpen) {
           openAllZeroCell (y, x + 1);
         }
-        if (!board[y + 1][x - 1].isMine && !board[y + 1][x - 1].isOpen) {
+        if (!board[y + 1][x - 1].isOpen) {
           openAllZeroCell (y + 1, x - 1);
         }
-        if (!board[y + 1][x].isMine && !board[y + 1][x].isOpen) {
+        if (!board[y + 1][x].isOpen) {
           openAllZeroCell (y + 1, x);
         }
-        if (!board[y + 1][x + 1].isMine && !board[y + 1][x + 1].isOpen) {
+        if (!board[y + 1][x + 1].isOpen) {
           openAllZeroCell (y + 1, x + 1);
         }
       };
@@ -70,9 +73,15 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
   const handleRightClickEvent = (e, y, x) => {
     e.preventDefault ();
     if (board[y][x].isOpen) return;
-    board[y][x].isFlag
-      ? dispatch (increaseMineNumber ())
-      : dispatch (decreaseMineNumber ());
+    if (board[y][x].isFlag) {
+      dispatch (decreaseOpenedCellNumber ());
+      dispatch (increaseMineNumber ());
+    } else {
+      if (numberOfMine < 1) return;
+      dispatch (increaseOpenedCellNumber ());
+      dispatch (decreaseMineNumber ());
+    }
+
     dispatch (toggleFlag (y, x)); // flag
   };
 
@@ -80,8 +89,9 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
     <div
       className={`board-cell ${cell.isOpen ? 'opened' : cell.isFlag ? 'flagged' : 'closed'}`}
       key={`cell-${cellIdx}`}
-      onClick={e => handleClickEvent (rowIdx, cellIdx)}
+      onClick={() => handleClickEvent (rowIdx, cellIdx)}
       onContextMenu={e => handleRightClickEvent (e, rowIdx, cellIdx)}
+      onDoubleClick={() => alert ('double click')}
     >
       {/* {cell.isFlag
           ? <FontAwesomeIcon icon={faFlag} />
