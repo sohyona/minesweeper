@@ -5,13 +5,12 @@ import {useSelector, useDispatch} from 'react-redux';
 import {increment} from './actions';
 
 function App () {
-  const counter = useSelector (state => state.counter);
-  const dispatch = useDispatch();
+  const board = useSelector (state => state.board);
+  const dispatch = useDispatch ();
 
   return (
     <div className="App">
-      <h1>counter: {counter}</h1>
-      <button onClick={() => dispatch(increment())}> increment </button>
+      {console.log (board)}
     </div>
   );
 }
