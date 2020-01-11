@@ -6,8 +6,11 @@ export const openCell = (y, x) => {
   };
 };
 
-export const mineFound = () => {
+export const toggleFlag = (y, x) => {
   return {
-    type: 'DECREASE',
+    type: 'TOGGLE_FLAG',
+    y: y,
+    x: x,
   };
 };
+

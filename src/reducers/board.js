@@ -71,10 +71,17 @@ for (let i = 0; i < numberOfMine; i++) {
 
 const boardReducer = (state = initBoard, action) => {
   switch (action.type) {
-    case 'OPEN_CELL':
+    case 'OPEN_CELL': {
       let newState = state;
       newState[action.y][action.x].isOpen = true;
-      return state;
+      return newState;
+    }
+    case 'TOGGLE_FLAG': {
+      let newState = state;
+      newState[action.y][action.x].isFlag = !newState[action.y][action.x]
+        .isFlag;
+      return newState;
+    }
     default:
       return state;
   }

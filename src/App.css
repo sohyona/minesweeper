@@ -29,3 +29,8 @@
   color: #999;
   background-color: #e0e0e0;
 }
+
+.board-cell.flagged {
+  color: #999;
+  background-color: blue;
+}
