@@ -1,11 +1,14 @@
 import React, {useEffect, useCallback} from 'react';
 import './App.css';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {boardSize, numberOfMine} from './misc';
+import {setGameOver} from './actions';
 import Board from './components/Board';
 import Control from './components/Control';
 
 function App () {
+  const dispatch = useDispatch ();
+
   const board = useSelector (state => state.board, []);
   const count = useSelector (state => state.count);
   const remainingMines = useSelector (state => state.mine);
@@ -29,10 +32,18 @@ function App () {
     () => {
       if (remainingMines === 0 && count === boardSize * boardSize) {
         const validation = validateBoard ();
-        alert (validation);
+        console.log (validation);
+
+        if (validation === true) {
+          alert ('성공');
+          dispatch (setGameOver ());
+        } else {
+          alert ('실패');
+          dispatch (setGameOver ());
+        }
       }
     },
-    [count, remainingMines, validateBoard]
+    [count, dispatch, remainingMines, validateBoard]
   );
 
   return (
@@ -40,7 +51,7 @@ function App () {
       <h1>Minsweeper</h1>
 
       <h3>Remaining mines: {remainingMines}</h3>
-      
+
       <Board />
       <Control />
 

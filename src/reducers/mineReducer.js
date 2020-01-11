@@ -6,6 +6,8 @@ const mineReducer = (state = numberOfMine, action) => {
       return state - 1;
     case 'INCREASE_MINE_NUMBER':
       return state + 1;
+    case 'RESET_MINE_NUMBER':
+      return numberOfMine;
     default:
       return state;
   }

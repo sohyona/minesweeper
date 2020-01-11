@@ -35,8 +35,9 @@
   color: #fff;
 }
 
-.board-cell.gameover {
+.board-cell.dead {
   background-color: red;
+  color: #fff;
 }
 
 .control .btn-restart {
@@ -45,6 +46,11 @@
   width: 200px;
   margin: 1em auto;
   cursor: pointer;
+}
+
+.control .stopwatch {
+  font-size: 2em;
+  margin-top: 0.4em;
 }
 
 .footer {

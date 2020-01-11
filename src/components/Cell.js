@@ -8,6 +8,7 @@ import {
   increaseOpenedCellNumber,
   decreaseOpenedCellNumber,
   setGameOver,
+  setDead,
 } from '../actions';
 import {boardSize} from '../misc';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -19,11 +20,14 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
   const board = useSelector (state => state.board, []);
   const numberOfMine = useSelector (state => state.mine);
   const gameOver = useSelector (state => state.gameOver);
+  const isDead = useSelector (state => state.isDead);
+  console.log (isDead);
 
   const handleClickEvent = (y, x) => {
     if (board[y][x].isOpen || gameOver) return;
 
     if (board[y][x].isMine) {
+      dispatch (setDead ());
       dispatch (openCell (y, x));
       dispatch (setGameOver ());
       return;
@@ -105,7 +109,7 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
 
   return (
     <div
-      className={`board-cell ${gameOver ? 'gameover' : ''} ${cell.isOpen ? 'opened' : cell.isFlag ? 'flagged' : 'closed'}`}
+      className={`board-cell ${isDead ? 'dead' : ''} ${cell.isOpen ? 'opened' : cell.isFlag ? 'flagged' : 'closed'}`}
       key={`cell-${cellIdx}`}
       onClick={() => handleClickEvent (rowIdx, cellIdx)}
       onContextMenu={e => handleRightClickEvent (e, rowIdx, cellIdx)}
