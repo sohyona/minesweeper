@@ -1,5 +1,10 @@
-const boardSize = 8;
-const boardInit = [];
+import {boardSize} from '../misc';
+
+const numberOfRow = boardSize;
+const numberOfCell = boardSize;
+const numberOfMine = 8;
+const sizeOfBoundary = 2;
+const initBoard = [];
 const cellData = (
   y,
   x,
@@ -18,14 +23,54 @@ const cellData = (
   };
 };
 
-for (let i = 0; i < boardSize; i++) {
-  boardInit.push ([]);
-  for (let j = 0; j < boardSize; j++) {
-    boardInit[i].push (cellData (i, j));
+// init empty board
+for (let i = 0; i < numberOfRow + sizeOfBoundary; i++) {
+  initBoard.push ([]);
+  for (let j = 0; j < numberOfCell + sizeOfBoundary; j++) {
+    initBoard[i].push (cellData (i, j));
   }
 }
 
-const boardReducer = (state = boardInit, action) => {
+// set mine
+for (let i = 0; i < numberOfMine; i++) {
+  const y = Math.floor (Math.random (1) * numberOfRow + 1);
+  const x = Math.floor (Math.random (1) * numberOfCell + 1);
+  console.log ('mine location', y, x);
+
+  // 지뢰가 이미 존재하는 경우
+  if (initBoard[y][x].isMine) {
+    i--;
+    continue;
+  }
+  initBoard[y][x].isMine = true;
+
+  if (!initBoard[y - 1][x - 1].isMine) {
+    initBoard[y - 1][x - 1].count++;
+  }
+  if (!initBoard[y - 1][x].isMine) {
+    initBoard[y - 1][x].count++;
+  }
+  if (!initBoard[y - 1][x + 1].isMine) {
+    initBoard[y - 1][x + 1].count++;
+  }
+  if (!initBoard[y][x - 1].isMine) {
+    initBoard[y][x - 1].count++;
+  }
+  if (!initBoard[y][x + 1].isMine) {
+    initBoard[y][x + 1].count++;
+  }
+  if (!initBoard[y + 1][x - 1].isMine) {
+    initBoard[y + 1][x - 1].count++;
+  }
+  if (!initBoard[y + 1][x].isMine) {
+    initBoard[y + 1][x].count++;
+  }
+  if (!initBoard[y + 1][x + 1].isMine) {
+    initBoard[y + 1][x + 1].count++;
+  }
+}
+
+const boardReducer = (state = initBoard, action) => {
   switch (action.type) {
     default:
       return state;
