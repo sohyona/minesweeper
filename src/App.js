@@ -1,7 +1,12 @@
 import React from 'react';
 import './App.css';
 import {useSelector, useDispatch} from 'react-redux';
-import {openCell, toggleFlag} from './actions';
+import {
+  openCell,
+  toggleFlag,
+  increaseMineNumber,
+  decreaseMineNumber,
+} from './actions';
 import {boardSize} from './misc';
 
 function App () {
@@ -17,6 +22,9 @@ function App () {
       }
       dispatch (openCell (y, x));
     } else if (e.type === 'contextmenu') {
+      board[y][x].isFlag 
+        ? dispatch (increaseMineNumber ())
+        : dispatch (decreaseMineNumber ());
       dispatch (toggleFlag (y, x)); // flag
     }
   };

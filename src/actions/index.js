@@ -14,3 +14,14 @@ export const toggleFlag = (y, x) => {
   };
 };
 
+export const increaseMineNumber = () => {
+  return {
+    type: 'INCREASE',
+  };
+};
+
+export const decreaseMineNumber = () => {
+  return {
+    type: 'DECREASE',
+  };
+};
