@@ -1,8 +1,7 @@
-import {boardSize} from '../misc';
+import {boardSize, numberOfMine} from '../misc';
 
 const numberOfRow = boardSize;
 const numberOfCell = boardSize;
-const numberOfMine = 8;
 const sizeOfBoundary = 2;
 const initBoard = [];
 const cellData = (
@@ -23,7 +22,7 @@ const cellData = (
   };
 };
 
-// init empty board
+// init board to start game
 for (let i = 0; i < numberOfRow + sizeOfBoundary; i++) {
   initBoard.push ([]);
   for (let j = 0; j < numberOfCell + sizeOfBoundary; j++) {
@@ -72,6 +71,10 @@ for (let i = 0; i < numberOfMine; i++) {
 
 const boardReducer = (state = initBoard, action) => {
   switch (action.type) {
+    case 'OPEN_CELL':
+      let newState = state;
+      newState[action.y][action.x].isOpen = true;
+      return state;
     default:
       return state;
   }

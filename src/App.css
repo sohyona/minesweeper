@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  padding-top: 3em;
+  padding: 3em 0em;
 }
 
 .board-container {
@@ -14,7 +14,18 @@
 
 .board-cell {
   width: 40px;
-  line-height: 30px;
+  height: 40px;
+  line-height: 40px;
   text-align: center;
   border: 1px #999 solid;
+}
+
+.board-cell.opened {
+  color: #000;
+  background-color: #fff;
+}
+
+.board-cell.closed {
+  color: #999;
+  background-color: #e0e0e0;
 }
