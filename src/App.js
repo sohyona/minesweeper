@@ -22,6 +22,7 @@ function App () {
       }
       dispatch (openCell (y, x));
     } else if (e.type === 'contextmenu') {
+      e.preventDefault();
       board[y][x].isFlag 
         ? dispatch (increaseMineNumber ())
         : dispatch (decreaseMineNumber ());
