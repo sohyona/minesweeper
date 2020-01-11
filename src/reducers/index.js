@@ -1,5 +1,5 @@
-import boardReducer from './board';
-import mineReducer from './mine';
+import boardReducer from './boardReducer';
+import mineReducer from './mineReducer';
 import {combineReducers} from 'redux';
 
 const allReducers = combineReducers ({
