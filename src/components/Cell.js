@@ -11,7 +11,7 @@ import {
 } from '../actions';
 import {boardSize} from '../misc';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faFlag} from '@fortawesome/free-solid-svg-icons';
+import {faFlag, faBomb} from '@fortawesome/free-solid-svg-icons';
 
 const Cell = ({cell, rowIdx, cellIdx}) => {
   const dispatch = useDispatch ();
@@ -88,6 +88,21 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
     dispatch (toggleFlag (y, x)); // flag
   };
 
+  const CellContent = ({cell}) => {
+    if (cell.isFlag) {
+      return <FontAwesomeIcon icon={faFlag} />;
+    } else if (cell.isOpen) {
+      if (cell.isMine) {
+        return <FontAwesomeIcon icon={faBomb} />;
+      } else {
+        if (cell.count > 0) {
+          return cell.count;
+        }
+      }
+    }
+    return ' ';
+  };
+
   return (
     <div
       className={`board-cell ${gameOver ? 'gameover' : ''} ${cell.isOpen ? 'opened' : cell.isFlag ? 'flagged' : 'closed'}`}
@@ -96,9 +111,10 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
       onContextMenu={e => handleRightClickEvent (e, rowIdx, cellIdx)}
       //   onDoubleClick={() => alert ('double click')}
     >
-      {cell.isFlag
+      <CellContent cell={cell} />
+      {/* {cell.isFlag
             ? <FontAwesomeIcon icon={faFlag} />
-            : cell.isOpen ? cell.count === 0 ? ' ' : cell.count : ' '}
+            : cell.isOpen ? cell.count === 0 ? ' ' : cell.count : ' '} */}
       {/* {cell.isMine ? '*' : cell.count === 0 ? ' ' : cell.count} */}
     </div>
   );

@@ -2,13 +2,14 @@ import React, {useEffect, useCallback} from 'react';
 import './App.css';
 import {useSelector} from 'react-redux';
 import {boardSize, numberOfMine} from './misc';
-import Cell from './components/Cell';
+import Board from './components/Board';
+import Control from './components/Control';
 
 function App () {
   const board = useSelector (state => state.board, []);
   const count = useSelector (state => state.count);
   const remainingMines = useSelector (state => state.mine);
-  const gameOver = useSelector (state => state.gameOver);
+  // const gameOver = useSelector (state => state.gameOver);
 
   const validateBoard = useCallback (
     () => {
@@ -26,8 +27,6 @@ function App () {
 
   useEffect (
     () => {
-      console.log ('count: ', count);
-      console.log ('remainingMines: ', remainingMines);
       if (remainingMines === 0 && count === boardSize * boardSize) {
         const validation = validateBoard ();
         alert (validation);
@@ -41,27 +40,10 @@ function App () {
       <h1>Minsweeper</h1>
 
       <h3>Remaining mines: {remainingMines}</h3>
-      <div className="board-container">
-        {board.map ((row, rowIdx) => {
-          if (rowIdx !== 0 && rowIdx !== boardSize + 1) {
-            return (
-              <div className="board-row" key={`row-${rowIdx}`}>
-                {row.map ((cell, cellIdx) => {
-                  if (cellIdx !== 0 && cellIdx !== boardSize + 1)
-                    return (
-                      <Cell
-                        cell={cell}
-                        key={`${rowIdx}-${cellIdx}`}
-                        rowIdx={rowIdx}
-                        cellIdx={cellIdx}
-                      />
-                    );
-                })}
-              </div>
-            );
-          }
-        })}
-      </div>
+      
+      <Board />
+      <Control />
+
       <div className="footer">
         <p>
           This app is optimized for Chrome

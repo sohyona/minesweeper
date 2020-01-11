@@ -3,6 +3,9 @@ const gameOverReducer = (state = false, action) => {
     case 'GAMEOVER': {
       return true;
     }
+    case 'GAME_IN_PROGRESS': {
+      return false;
+    }
     default:
       return state;
   }

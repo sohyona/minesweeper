@@ -28,18 +28,30 @@ export const decreaseMineNumber = () => {
 
 export const increaseOpenedCellNumber = () => {
   return {
-    type: 'INCREASE_OPENED_CELL_NUMBER'
-  }
-}
+    type: 'INCREASE_OPENED_CELL_NUMBER',
+  };
+};
 
 export const decreaseOpenedCellNumber = () => {
   return {
-    type: 'DECREASE_OPENED_CELL_NUMBER'
-  }
-}
+    type: 'DECREASE_OPENED_CELL_NUMBER',
+  };
+};
 
 export const setGameOver = () => {
   return {
-    type: 'GAMEOVER'
-  }
-}
+    type: 'GAMEOVER',
+  };
+};
+
+export const resetBoard = () => {
+  return {
+    type: 'RESET_BOARD',
+  };
+};
+
+export const setGameInProgress = () => {
+  return {
+    type: 'GAME_IN_PROGRESS',
+  };
+};
