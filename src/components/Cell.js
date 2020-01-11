@@ -23,9 +23,11 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
   const gameOver = useSelector (state => state.gameOver);
   const isDead = useSelector (state => state.isDead);
 
+  // 왼쪽 클릭시
   const handleClickEvent = (y, x) => {
     if (board[y][x].isOpen || gameOver) return;
 
+    // 지뢰 클릭시
     if (board[y][x].isMine) {
       swal ('실패! 다시 도전해주세요.');
       dispatch (setDead ());
@@ -34,21 +36,24 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
       return;
     }
 
+    // 지뢰가 아니고 카운트가 0보다 클때
     if (board[y][x].count > 0) {
       dispatch (openCell (y, x));
       dispatch (increaseOpenedCellNumber ());
     } else {
+      // 0을 클릭시 자동으로 펼쳐지는 재귀 함수
       const openAllZeroCell = (y, x) => {
         if (board[y][x].isFlag) return;
         dispatch (openCell (y, x));
 
+        // 초반에 세팅했던 boundary는 무시한다
         if (y === 0 || x === 0 || y > boardSize || x > boardSize) return;
 
         dispatch (increaseOpenedCellNumber ());
-
+        // 0이 아니면 종료
         if (board[y][x].count > 0) return;
 
-        // 지뢰이면 안가는거, 플래그이면 안가는거
+        // 주변 0을 모두 열기
         if (!board[y - 1][x - 1].isOpen) {
           openAllZeroCell (y - 1, x - 1);
         }
@@ -78,9 +83,12 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
     }
   };
 
+  // 오른쪽 클릭(flag)시
   const handleRightClickEvent = (e, y, x) => {
-    e.preventDefault ();
+    e.preventDefault (); // 네이티브 오른쪽 클릭 방지
+
     if (board[y][x].isOpen || gameOver) return;
+
     if (board[y][x].isFlag) {
       dispatch (decreaseOpenedCellNumber ());
       dispatch (increaseMineNumber ());
@@ -90,9 +98,10 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
       dispatch (decreaseMineNumber ());
     }
 
-    dispatch (toggleFlag (y, x)); // flag
+    dispatch (toggleFlag (y, x));
   };
 
+  // cell 안에 보여줄 내용
   const CellContent = ({cell}) => {
     if (cell.isFlag) {
       return <FontAwesomeIcon icon={faFlag} />;
@@ -114,13 +123,8 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
       key={`cell-${cellIdx}`}
       onClick={() => handleClickEvent (rowIdx, cellIdx)}
       onContextMenu={e => handleRightClickEvent (e, rowIdx, cellIdx)}
-      //   onDoubleClick={() => alert ('double click')}
     >
       <CellContent cell={cell} />
-      {/* {cell.isFlag
-            ? <FontAwesomeIcon icon={faFlag} />
-            : cell.isOpen ? cell.count === 0 ? ' ' : cell.count : ' '} */}
-      {/* {cell.isMine ? '*' : cell.count === 0 ? ' ' : cell.count} */}
     </div>
   );
 };

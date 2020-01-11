@@ -7,14 +7,12 @@ import {setGameOver} from './actions';
 import Board from './components/Board';
 import Control from './components/Control';
 
-function App () {
+const App = () => {
   const dispatch = useDispatch ();
 
   const board = useSelector (state => state.board, []);
   const numberOfOpenedCell = useSelector (state => state.count);
   const remainingMines = useSelector (state => state.mine);
-
-  const [username, setUsername] = useState ('');
 
   const validateBoard = useCallback (
     () => {
@@ -29,17 +27,6 @@ function App () {
     },
     [board]
   );
-
-  // 랭킹보드 사용시 modal에서 이름 받아주기
-  // useEffect (() => {
-  //   const wrapper = async () => {
-  //     const modalValue = await swal ('이름을 입력해주세요:', {
-  //       content: 'input',
-  //     });
-  //     setUsername (modalValue);
-  //   };
-  //   wrapper ();
-  // }, []);
 
   useEffect (
     () => {
@@ -78,6 +65,6 @@ function App () {
       </div>
     </div>
   );
-}
+};
 
 export default App;
