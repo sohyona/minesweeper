@@ -31,8 +31,8 @@
 }
 
 .board-cell.flagged {
-  color: #999;
   background-color: blue;
+  color: #fff;
 }
 
 .board-cell.gameover {
