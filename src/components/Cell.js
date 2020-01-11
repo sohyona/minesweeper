@@ -21,12 +21,12 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
   const numberOfMine = useSelector (state => state.mine);
   const gameOver = useSelector (state => state.gameOver);
   const isDead = useSelector (state => state.isDead);
-  console.log (isDead);
 
   const handleClickEvent = (y, x) => {
     if (board[y][x].isOpen || gameOver) return;
 
     if (board[y][x].isMine) {
+      alert('실패')
       dispatch (setDead ());
       dispatch (openCell (y, x));
       dispatch (setGameOver ());
