@@ -8,17 +8,21 @@ function App () {
   const board = useSelector (state => state.board, []);
   const count = useSelector (state => state.count);
   const remainingMines = useSelector (state => state.mine);
+  const gameOver = useSelector (state => state.gameOver);
 
-  const validateBoard = useCallback (() => {
-    let validateCount = 0;
-    for (let i = 1; i < boardSize + 1; i++) {
-      for (let j = 1; j < boardSize + 1; j++) {
-        if (board[i][j].isFlag && board[i][j].isMine) validateCount++;
+  const validateBoard = useCallback (
+    () => {
+      let validateCount = 0;
+      for (let i = 1; i < boardSize + 1; i++) {
+        for (let j = 1; j < boardSize + 1; j++) {
+          if (board[i][j].isFlag && board[i][j].isMine) validateCount++;
+        }
       }
-    }
 
-    return validateCount === numberOfMine ? true : false;
-  }, [board]);
+      return validateCount === numberOfMine ? true : false;
+    },
+    [board]
+  );
 
   useEffect (
     () => {

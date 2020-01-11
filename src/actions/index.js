@@ -37,3 +37,9 @@ export const decreaseOpenedCellNumber = () => {
     type: 'DECREASE_OPENED_CELL_NUMBER'
   }
 }
+
+export const setGameOver = () => {
+  return {
+    type: 'GAMEOVER'
+  }
+}

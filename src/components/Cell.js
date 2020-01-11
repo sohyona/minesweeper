@@ -7,6 +7,7 @@ import {
   decreaseMineNumber,
   increaseOpenedCellNumber,
   decreaseOpenedCellNumber,
+  setGameOver,
 } from '../actions';
 import {boardSize} from '../misc';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -17,12 +18,14 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
 
   const board = useSelector (state => state.board, []);
   const numberOfMine = useSelector (state => state.mine);
+  const gameOver = useSelector (state => state.gameOver);
 
   const handleClickEvent = (y, x) => {
-    if (board[y][x].isOpen) return;
+    if (board[y][x].isOpen || gameOver) return;
 
     if (board[y][x].isMine) {
-      alert ('지뢰입니다');
+      dispatch (openCell (y, x));
+      dispatch (setGameOver ());
       return;
     }
 
@@ -72,7 +75,7 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
 
   const handleRightClickEvent = (e, y, x) => {
     e.preventDefault ();
-    if (board[y][x].isOpen) return;
+    if (board[y][x].isOpen || gameOver) return;
     if (board[y][x].isFlag) {
       dispatch (decreaseOpenedCellNumber ());
       dispatch (increaseMineNumber ());
@@ -87,16 +90,16 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
 
   return (
     <div
-      className={`board-cell ${cell.isOpen ? 'opened' : cell.isFlag ? 'flagged' : 'closed'}`}
+      className={`board-cell ${gameOver ? 'gameover' : ''} ${cell.isOpen ? 'opened' : cell.isFlag ? 'flagged' : 'closed'}`}
       key={`cell-${cellIdx}`}
       onClick={() => handleClickEvent (rowIdx, cellIdx)}
       onContextMenu={e => handleRightClickEvent (e, rowIdx, cellIdx)}
-      onDoubleClick={() => alert ('double click')}
+      //   onDoubleClick={() => alert ('double click')}
     >
-      {/* {cell.isFlag
-          ? <FontAwesomeIcon icon={faFlag} />
-          : cell.isOpen ? cell.count : ' '} */}
-      {cell.isMine ? '*' : cell.count === 0 ? ' ' : cell.count}
+      {cell.isFlag
+            ? <FontAwesomeIcon icon={faFlag} />
+            : cell.isOpen ? cell.count === 0 ? ' ' : cell.count : ' '}
+      {/* {cell.isMine ? '*' : cell.count === 0 ? ' ' : cell.count} */}
     </div>
   );
 };

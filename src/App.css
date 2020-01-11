@@ -35,6 +35,10 @@
   background-color: blue;
 }
 
+.board-cell.gameover {
+  background-color: red;
+}
+
 .footer {
   margin-top: 4em;
 }
