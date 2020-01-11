@@ -6,7 +6,6 @@ const Stopwatch = () => {
   const dispatch = useDispatch ();
   const timer = useSelector (state => state.timerReducer);
   const gameOver = useSelector (state => state.gameOver);
-  console.log (timer);
 
   useEffect (
     () => {

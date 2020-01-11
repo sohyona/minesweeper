@@ -1,6 +1,7 @@
-import React, {useEffect, useCallback} from 'react';
+import React, {useEffect, useCallback, useState} from 'react';
 import './App.css';
 import {useSelector, useDispatch} from 'react-redux';
+import swal from '@sweetalert/with-react';
 import {boardSize, numberOfMine} from './misc';
 import {setGameOver} from './actions';
 import Board from './components/Board';
@@ -10,9 +11,10 @@ function App () {
   const dispatch = useDispatch ();
 
   const board = useSelector (state => state.board, []);
-  const count = useSelector (state => state.count);
+  const numberOfOpenedCell = useSelector (state => state.count);
   const remainingMines = useSelector (state => state.mine);
-  // const gameOver = useSelector (state => state.gameOver);
+
+  const [username, setUsername] = useState ('');
 
   const validateBoard = useCallback (
     () => {
@@ -28,22 +30,35 @@ function App () {
     [board]
   );
 
+  // 랭킹보드 사용시 modal에서 이름 받아주기
+  // useEffect (() => {
+  //   const wrapper = async () => {
+  //     const modalValue = await swal ('이름을 입력해주세요:', {
+  //       content: 'input',
+  //     });
+  //     setUsername (modalValue);
+  //   };
+  //   wrapper ();
+  // }, []);
+
   useEffect (
     () => {
-      if (remainingMines === 0 && count === boardSize * boardSize) {
+      if (
+        remainingMines === 0 &&
+        numberOfOpenedCell === boardSize * boardSize
+      ) {
         const validation = validateBoard ();
-        console.log (validation);
 
         if (validation === true) {
-          alert ('성공');
+          swal ('성공!!! 짝짝짝!!!');
           dispatch (setGameOver ());
         } else {
-          alert ('실패');
+          swal ('실패! 다시 도전해주세요');
           dispatch (setGameOver ());
         }
       }
     },
-    [count, dispatch, remainingMines, validateBoard]
+    [numberOfOpenedCell, dispatch, remainingMines, validateBoard]
   );
 
   return (

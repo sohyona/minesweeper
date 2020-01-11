@@ -1,5 +1,6 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import swal from '@sweetalert/with-react';
 import {
   openCell,
   toggleFlag,
@@ -26,7 +27,7 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
     if (board[y][x].isOpen || gameOver) return;
 
     if (board[y][x].isMine) {
-      alert('실패')
+      swal ('실패! 다시 도전해주세요.');
       dispatch (setDead ());
       dispatch (openCell (y, x));
       dispatch (setGameOver ());
