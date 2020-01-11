@@ -5,16 +5,20 @@ import {
   toggleFlag,
   increaseMineNumber,
   decreaseMineNumber,
+  increaseOpenedCellNumber,
 } from '../actions';
 import {boardSize} from '../misc';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faFlag} from '@fortawesome/free-solid-svg-icons';
 
 const Cell = ({cell, rowIdx, cellIdx}) => {
-  const board = useSelector (state => state.board, []);
   const dispatch = useDispatch ();
 
-  const handleClickEvent = (e, y, x) => {
+  const board = useSelector (state => state.board, []);
+
+  const handleClickEvent = (y, x) => {
+    if (board[y][x].isOpen) return;
+
     if (board[y][x].isMine) {
       alert ('지뢰입니다');
       return;
@@ -22,12 +26,16 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
 
     if (board[y][x].count > 0) {
       dispatch (openCell (y, x));
+      dispatch (increaseOpenedCellNumber ());
     } else {
       const openAllZeroCell = (y, x) => {
         dispatch (openCell (y, x));
+
         if (y === 0 || x === 0 || y > boardSize || x > boardSize) return;
+
+        dispatch (increaseOpenedCellNumber ());
+
         if (board[y][x].count > 0) return;
-        console.log ('fill', y, x);
 
         // 지뢰이면 안가는거, 플래그이면 안가는거
         if (!board[y - 1][x - 1].isMine && !board[y - 1][x - 1].isOpen) {
@@ -67,11 +75,12 @@ const Cell = ({cell, rowIdx, cellIdx}) => {
       : dispatch (decreaseMineNumber ());
     dispatch (toggleFlag (y, x)); // flag
   };
+
   return (
     <div
       className={`board-cell ${cell.isOpen ? 'opened' : cell.isFlag ? 'flagged' : 'closed'}`}
       key={`cell-${cellIdx}`}
-      onClick={e => handleClickEvent (e, rowIdx, cellIdx)}
+      onClick={e => handleClickEvent (rowIdx, cellIdx)}
       onContextMenu={e => handleRightClickEvent (e, rowIdx, cellIdx)}
     >
       {/* {cell.isFlag

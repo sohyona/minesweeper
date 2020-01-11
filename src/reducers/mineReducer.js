@@ -2,9 +2,9 @@ import {numberOfMine} from '../misc';
 
 const mineReducer = (state = numberOfMine, action) => {
   switch (action.type) {
-    case 'DECREASE':
+    case 'DECREASE_MINE_NUMBER':
       return state - 1;
-    case 'INCREASE':
+    case 'INCREASE_MINE_NUMBER':
       return state + 1;
     default:
       return state;
