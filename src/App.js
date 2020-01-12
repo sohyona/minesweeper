@@ -1,11 +1,12 @@
-import React, {useEffect, useCallback, useState} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import './App.css';
 import {useSelector, useDispatch} from 'react-redux';
 import swal from '@sweetalert/with-react';
-import {boardSize, numberOfMine} from './misc';
+import {boardSize, numberOfMine, ranklist} from './misc';
 import {setGameOver} from './actions';
 import Board from './components/Board';
 import Control from './components/Control';
+import Rank from './components/Rank';
 
 const App = () => {
   const dispatch = useDispatch ();
@@ -13,6 +14,8 @@ const App = () => {
   const board = useSelector (state => state.board, []);
   const numberOfOpenedCell = useSelector (state => state.count);
   const remainingMines = useSelector (state => state.mine);
+  const timer = useSelector (state => state.timerReducer);
+
 
   const validateBoard = useCallback (
     () => {
@@ -39,13 +42,14 @@ const App = () => {
         if (validation === true) {
           swal ('성공!!! 짝짝짝!!!');
           dispatch (setGameOver ());
+          ranklist.push ({username: '김항우', time: timer});
         } else {
           swal ('실패! 다시 도전해주세요');
           dispatch (setGameOver ());
         }
       }
     },
-    [numberOfOpenedCell, dispatch, remainingMines, validateBoard]
+    [numberOfOpenedCell, dispatch, remainingMines, validateBoard, timer]
   );
 
   return (
@@ -56,6 +60,8 @@ const App = () => {
 
       <Board />
       <Control />
+
+      <Rank />
 
       <div className="footer">
         <p>
